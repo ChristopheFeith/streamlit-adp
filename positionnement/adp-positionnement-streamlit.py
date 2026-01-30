@@ -253,12 +253,6 @@ def decode_and_score(rows: list[list[str]], bank: dict, bareme: pd.DataFrame, se
 
     return pd.DataFrame(out_rows), mapping_df
 
-def to_excel_bytes(df: pd.DataFrame) -> bytes:
-    output = io.BytesIO()
-    with pd.ExcelWriter(output, engine="openpyxl") as writer:
-        df.to_excel(writer, index=False, sheet_name="Resultats")
-    return output.getvalue()
-
 # =========================
 # STREAMLIT UI
 # =========================
@@ -307,12 +301,12 @@ if uploaded_results:
             )
 
         # ---- Export Excel ----
-        xlsx = to_excel_bytes(df_scored)
+        csv_bytes = df_scored.to_csv(index=False).encode("utf-8-sig")
         st.download_button(
-            "Télécharger le fichier Excel (scores + cursus)",
-            data=xlsx,
-            file_name="resultats_positionnement_powerbi.xlsx",
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            label="Télécharger le CSV (scores + cursus)",
+            data=csv_bytes,
+            file_name="resultats_positionnement_powerbi.csv",
+            mime="text/csv",
         )
 
     except FileNotFoundError:
