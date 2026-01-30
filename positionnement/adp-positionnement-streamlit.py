@@ -3,6 +3,7 @@ import re
 import csv
 import pandas as pd
 import streamlit as st
+from pathlib import Path
 
 # =========================
 # CONFIG
@@ -134,6 +135,9 @@ def extract_participant_rows(lines: list[str]) -> list[list[str]]:
 # =========================
 # LOAD BAREME
 # =========================
+HERE = Path(__file__).resolve().parent
+BAREME_PATH = HERE / BAREME_FILENAME
+
 def load_bareme() -> pd.DataFrame:
     df = pd.read_csv(BAREME_FILENAME, encoding="utf-8-sig")
     df.columns = [norm_text(c) for c in df.columns]
