@@ -139,7 +139,7 @@ HERE = Path(__file__).resolve().parent
 BAREME_PATH = HERE / BAREME_FILENAME
 
 def load_bareme() -> pd.DataFrame:
-    df = pd.read_csv(BAREME_FILENAME, encoding="utf-8-sig")
+    df = pd.read_csv(BAREME_PATH, encoding="utf-8-sig")
     df.columns = [norm_text(c) for c in df.columns]
     for col in ["question", "reponse", "points"]:
         if col not in df.columns:
